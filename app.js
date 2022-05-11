@@ -3,14 +3,25 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Task from "./models/taskModel.js";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 dotenv.config();
 // nestjs usa o express por debaixo dos panos...
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 //string de conexão
-const db = mongoose.connect("mongodb://127.0.0.1/avanade");
+//const db = mongoose.connect("mongodb://127.0.0.1/avanade");
+// const db = mongoose.connect(
+//   "mongodb+srv://rest-api-user:1pfXi8vCwaagcVi5@cluster0.0ympx.mongodb.net/avanade?retryWrites=true&w=majority"
+// );
+const db = mongoose.connect(process.env.MONGODB);
 
 const tasksRouter = express.Router();
 //se não instalar o pacote dotenv não conseguimos ler arquivos .env
