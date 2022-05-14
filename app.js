@@ -1,4 +1,8 @@
+// ESModule
 import express from "express";
+//commonJS
+// const express = require("express");
+
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Task from "./models/taskModel.js";
@@ -8,6 +12,7 @@ import cors from "cors";
 dotenv.config();
 // nestjs usa o express por debaixo dos panos...
 
+// REST API - usuário (client - site ou app que consome informação. No Back-end teremos uma API que responde as requisições do usuário. REST x GraphQL)
 const app = express();
 
 app.use(
@@ -18,9 +23,7 @@ app.use(
 
 //string de conexão
 //const db = mongoose.connect("mongodb://127.0.0.1/avanade");
-// const db = mongoose.connect(
-//   "mongodb+srv://rest-api-user:1pfXi8vCwaagcVi5@cluster0.0ympx.mongodb.net/avanade?retryWrites=true&w=majority"
-// );
+// const db = mongoose.connect();
 const db = mongoose.connect(process.env.MONGODB);
 
 const tasksRouter = express.Router();
@@ -30,7 +33,8 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use("/api", tasksRouter);
+//localhost:3000/api/tasks
 tasksRouter
   .route("/tasks")
   .post((req, res) => {
@@ -68,7 +72,6 @@ tasksRouter.route("/tasks/:taskId").get((req, res) => {
   });
 });
 
-app.use("/api", tasksRouter);
 // localhost:5000/api/tasks
 //HATEOAS - Hypermedia as the Engine of Application State
 app.get("/", (req, res) => {
